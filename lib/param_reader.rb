@@ -58,7 +58,7 @@ module GitRemoteBranch
   end
   
   # remote can be specified using origin/branch instead of branch origin
-  def get_origin(origin, branch)
-    return origin || (branch.count("/") > 2 && branch.split("/").first) || 'origin'
+  def get_origin(origin, branch=nil)
+    return origin || ((branch||"").count("/") > 0 && branch.split("/").first) || 'origin'
   end
 end

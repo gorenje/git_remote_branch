@@ -210,6 +210,12 @@ class ParamReaderTest < Test::Unit::TestCase
     should "return the unchanged param if it's not nil" do
       assert_equal 'someword', grb.get_origin('someword')
     end
+    should "return the remote if it's specified in the branch" do
+      assert_equal 'fubar', grb.get_origin(nil, "fubar/snafu")
+    end
+    should "commend line origin overrides the branch specification" do
+      assert_equal 'cat', grb.get_origin("cat", "fubar/snafu")
+    end
   end
 
 end
