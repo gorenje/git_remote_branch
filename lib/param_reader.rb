@@ -16,7 +16,7 @@ module GitRemoteBranch
     return HELP_PARAMS if p[:action] == :help
 
     p[:branch]  = get_branch(argv[1])
-    p[:origin]  = get_origin(argv[2],p[:branch])
+    p[:origin]  = get_origin(argv[2],argv[1])
     
     # If in explain mode, the user doesn't have to specify a branch or be on in
     # actual repo to get the explanation. 
@@ -54,7 +54,7 @@ module GitRemoteBranch
   end
 
   def get_branch(branch)
-    branch
+    ((branch||"").count("/") > 0 && branch.split("/").last) || branch
   end
   
   # remote can be specified using origin/branch instead of branch origin
