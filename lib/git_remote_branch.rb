@@ -88,7 +88,24 @@ module GitRemoteBranch
           "#{GIT} branch --track #{branch_name} #{origin}/#{branch_name}"
         end'
       ]
+    },
+    
+    :tco      => {
+      :description => 'track and checkout an existing remote branch',
+      :aliases  => %w{tco trackco tcheckout},
+      :commands => [
+        # This string programming thing is getting old. Not flexible enough anymore.
+        '"#{GIT} fetch #{origin}"',
+        'if local_branches.include?(branch_name) 
+          "#{GIT} config branch.#{branch_name}.remote #{origin}\n" +
+          "#{GIT} config branch.#{branch_name}.merge refs/heads/#{branch_name}"
+        else
+          "#{GIT} branch --track #{branch_name} #{origin}/#{branch_name}"
+        end',
+        '"#{GIT} checkout #{branch_name}"',
+      ]
     }
+    
   } unless defined?(COMMANDS)
   
   def self.get_reverse_map(commands)
@@ -114,7 +131,7 @@ module GitRemoteBranch
     return <<-HELP
   Usage:
 
-#{[:create, :publish, :rename, :delete, :track].map{|action|
+#{[:create, :publish, :rename, :delete, :track, :tco].map{|action|
       "  grb #{action} branch_name [origin_server] \n\n"
     }  
   }
